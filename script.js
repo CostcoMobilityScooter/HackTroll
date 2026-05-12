@@ -14,7 +14,8 @@ const words = [
 ];
 
 function randomLine() {
-  let randomText = Math.random().toString(36).substring(2, 15);
+  let randomText =
+    Math.random().toString(36).substring(2, 10);
 
   let randomWord =
     words[Math.floor(Math.random() * words.length)];
@@ -22,14 +23,35 @@ function randomLine() {
   return randomText + "  " + randomWord;
 }
 
-function addLine() {
-  screen.innerHTML += randomLine() + "\\n";
+let currentLine = "";
+let currentText = "";
+let index = 0;
 
-  window.scrollTo(0, document.body.scrollHeight);
+function startTyping() {
+  currentLine = randomLine() + "\\n";
+  index = 0;
 
-  if (screen.innerHTML.length > 20000) {
-    screen.innerHTML = "";
+  typeCharacter();
+}
+
+function typeCharacter() {
+  if (index < currentLine.length) {
+    currentText += currentLine[index];
+
+    screen.textContent = currentText;
+
+    index++;
+
+    window.scrollTo(0, document.body.scrollHeight);
+
+    setTimeout(typeCharacter, 25);
+  } else {
+    setTimeout(startTyping, 100);
+  }
+
+  if (currentText.length > 15000) {
+    currentText = "";
   }
 }
 
-setInterval(addLine, 100);
+startTyping();
