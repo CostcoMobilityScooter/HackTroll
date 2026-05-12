@@ -13,45 +13,49 @@ const words = [
   "UPLINK ESTABLISHED"
 ];
 
-function randomLine() {
-  let randomText =
-    Math.random().toString(36).substring(2, 10);
+const chars =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
-  let randomWord =
-    words[Math.floor(Math.random() * words.length)];
+let text = "";
 
-  return randomText + "  " + randomWord;
+function randomWord() {
+  return words[Math.floor(Math.random() * words.length)];
 }
 
-let currentLine = "";
-let currentText = "";
-let index = 0;
-
-function startTyping() {
-  currentLine = randomLine() + "\\n";
-  index = 0;
-
-  typeCharacter();
+function randomChar() {
+  return chars[Math.floor(Math.random() * chars.length)];
 }
 
-function typeCharacter() {
-  if (index < currentLine.length) {
-    currentText += currentLine[index];
-
-    screen.textContent = currentText;
-
-    index++;
-
-    window.scrollTo(0, document.body.scrollHeight);
-
-    setTimeout(typeCharacter, 25);
-  } else {
-    setTimeout(startTyping, 100);
+function type() {
+  // random enter/new line
+  if (Math.random() < 0.08) {
+    text += "\\n";
   }
 
-  if (currentText.length > 15000) {
-    currentText = "";
+  // sometimes add hacker words
+  else if (Math.random() < 0.04) {
+    text += " " + randomWord() + " ";
   }
+
+  // normal typing
+  else {
+    text += randomChar();
+  }
+
+  screen.textContent = text;
+
+  // auto scroll
+  window.scrollTo(0, document.body.scrollHeight);
+
+  // clear screen eventually
+  if (text.length > 20000) {
+    text = "";
+  }
+
+  // random typing speed
+  const speed = Math.random() * 40 + 10;
+
+  setTimeout(type, speed);
 }
 
-startTyping();
+type();
