@@ -1,25 +1,124 @@
-body {
-  margin: 0;
-  background: black;
-  overflow: hidden;
-  font-family: monospace;
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hacker Screen</title>
 
-  display: flex;
-  justify-content: center;
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+
+      display: flex;
+      justify-content: center;
+
+      font-family: monospace;
+    }
+
+    #screen {
+      width: 70%;
+      height: 100vh;
+
+      color: #00ff00;
+
+      padding: 40px;
+
+      font-size: 14px;
+      line-height: 1.5;
+
+      white-space: pre-wrap;
+      word-break: break-word;
+
+      overflow-y: hidden;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="screen"></div>
+
+<script>
+const screen = document.getElementById("screen");
+
+const hackerWords = [
+  "ACCESS GRANTED",
+  "SYSTEM OVERRIDE",
+  "KERNEL ERROR",
+  "TRACKING IP",
+  "BYPASSING FIREWALL",
+  "DECRYPTING FILES",
+  "MAINFRAME ACCESS",
+  "SECURITY BREACH",
+  "UPLINK ESTABLISHED"
+];
+
+const chars =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%^&*<>[]{}";
+
+let output = "";
+
+function randomChar() {
+  return chars[
+    Math.floor(Math.random() * chars.length)
+  ];
 }
 
-#screen {
-  color: #00ff00;
-
-  width: 70%;
-  max-width: 900px;
-  height: 100vh;
-
-  padding: 40px;
-
-  font-size: 14px;
-  line-height: 1.6;
-
-  white-space: pre-wrap;
-  word-break: break-word;
+function randomWord() {
+  return hackerWords[
+    Math.floor(Math.random() * hackerWords.length)
+  ];
 }
+
+function type() {
+
+  let action = Math.random();
+
+  // RANDOM ENTER
+  if (action < 0.10) {
+    output += "\\n";
+  }
+
+  // RANDOM HACKER WORD
+  else if (action < 0.14) {
+    output += " " + randomWord() + " ";
+  }
+
+  // RANDOM TYPING BURST
+  else {
+
+    let burst =
+      Math.floor(Math.random() * 6) + 1;
+
+    for (let i = 0; i < burst; i++) {
+      output += randomChar();
+    }
+  }
+
+  screen.textContent = output;
+
+  // AUTO SCROLL
+  screen.scrollTop = screen.scrollHeight;
+
+  // CLEAR EVENTUALLY
+  if (output.length > 50000) {
+    output = "";
+  }
+
+  // RANDOM HUMAN SPEED
+  let speed;
+
+  if (Math.random() < 0.15) {
+    speed = Math.random() * 300 + 100;
+  } else {
+    speed = Math.random() * 30 + 5;
+  }
+
+  setTimeout(type, speed);
+}
+
+type();
+</script>
+
+</body>
+</html>
