@@ -1,13 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Hacker Screen</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+body {
+  margin: 0;
+  background: black;
+  overflow: hidden;
+  font-family: monospace;
 
-<div id="screen"></div>
+  display: flex;
+  justify-content: center;
+}
 
-<script src="script.js"></script>
-</body>
-</html>
+#screen {
+  color: #00ff00;
+
+  width: 70%;
+  max-width: 900px;
+  height: 100vh;
+
+  padding: 40px;
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+}
