@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hacker Screen</title>
+
+  
+
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+      font-family: monospace;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4ade80;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 100% 4px;
+      pointer-events: none;
+    }
+
+    #terminal {
+      width: 900px;
+      height: 80vh;
+      background: #0c0c0c;
+      border: 1px solid #3f3f46;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 0 40px rgba(0,0,0,0.7);
+    }
+
+    #content {
+      height: 100%;
+      overflow: hidden;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #4ade80;
+    }
+
+    .titlebar {
+      height: 40px;
+      background: #18181b;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      border-bottom: 1px solid #3f3f46;
+      position: relative;
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .red {
+      background: #ef4444;
+    }
+
+    .yellow {
+      background: #eab308;
+    }
+
+    .green {
+      background: #22c55e;
+    }
+
+    .title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #a1a1aa;
+      font-size: 14px;
+    }
+
+    .terminal-body {
+      padding: 16px;
+      height: calc(100% - 40px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .boot-text {
+      color: #4ade80;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.05;
+      background: white;
+    }
+
+    .cursor {
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal">
+    <div class="titlebar">
+      <div class="dots">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+      </div>
+
+      <div class="title">
+        user@ubuntu: ~
+      </div>
+    </div>
+
+    <div class="terminal-body">
+      <div class="boot-text">
+        user@ubuntu:~$ ./mainframe_access.sh
+      </div>
+
+      <div class="overlay"></div>
+
+      <div id="content"></div>
+    </div>
+  </div>
+
+  <script>
+    const content = document.getElementById('content');
+
+    const hackerWords = [
+      'ACCESS GRANTED',
+      'ACCESS DENIED',
+      'SYSTEM OVERRIDE',
+      'TRACKING IP',
+      'BYPASSING FIREWALL',
+      'DECRYPTING FILES',
+      'MAINFRAME ACCESS',
+      'SECURITY BREACH',
+      'PASSWORD CRACKED',
+      'ROOT ACCESS ENABLED',
+      'SCANNING NETWORK',
+      'LOCATING TARGET'
+    ];
+
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%^&*<>[]{}';
+
+    const fakeCommands = [
+      'sudo rm -rf /',
+      'nmap 192.168.0.1',
+      'ssh root@mainframe',
+      'decrypt --all',
+      'locate passwords.txt',
+      'ping FBI.gov',
+      './breach_firewall.sh',
+      'cat classified.txt'
+    ];
+
+    let output = '';
+
+    function randomChar() {
+      return chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    function randomWord() {
+      return hackerWords[Math.floor(Math.random() * hackerWords.length)];
+    }
+
+    function randomCommand() {
+      return fakeCommands[Math.floor(Math.random() * fakeCommands.length)];
+    }
+
+    function type() {
+      let action = Math.random();
+
+      if (action < 0.08) {
+        const prompts = [
+          'root@kali:/# ',
+          'user@ubuntu:~$ ',
+          'admin@server:/var/log$ ',
+          'guest@matrix:~$ ',
+          'sysop@mainframe:/usr/bin# '
+        ];
+
+        const prompt = prompts[Math.floor(Math.random() * prompts.length)];
+
+        output += '\n' + prompt + randomCommand() + '\n';
+      } else if (action < 0.14) {
+        output += ' ' + randomWord() + ' ';
+      } else {
+        let burst = Math.floor(Math.random() * 5) + 1;
+
+        for (let i = 0; i < burst; i++) {
+          output += randomChar();
+        }
+      }
+
+      content.innerHTML = output + '<span class="cursor">█</span>';
+      content.scrollTop = content.scrollHeight;
+
+      if (output.length > 40000) {
+        output = '';
+      }
+    }
+
+    function handleKeyPress() {
+      const presses = Math.floor(Math.random() * 5) + 1;
+
+      for (let i = 0; i < presses; i++) {
+        type();
+      }
+    }
+
+    setInterval(type, 60);
+
+    window.addEventListener('keydown', handleKeyPress);
+  </script>
+</body>
+</html>
