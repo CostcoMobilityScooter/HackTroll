@@ -1,59 +1,74 @@
 const screen = document.getElementById("screen");
 
-const words = [
+const hackerWords = [
   "ACCESS GRANTED",
   "SYSTEM OVERRIDE",
   "KERNEL ERROR",
   "TRACKING IP",
   "BYPASSING FIREWALL",
   "DECRYPTING FILES",
-  "LOADING PAYLOAD",
   "MAINFRAME ACCESS",
   "SECURITY BREACH",
   "UPLINK ESTABLISHED"
 ];
 
 const chars =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>[]{}#$%^&*";
 
-let text = "";
-
-function randomWord() {
-  return words[Math.floor(Math.random() * words.length)];
-}
+let output = "";
 
 function randomChar() {
   return chars[Math.floor(Math.random() * chars.length)];
 }
 
+function randomWord() {
+  return hackerWords[
+    Math.floor(Math.random() * hackerWords.length)
+  ];
+}
+
 function type() {
-  // random enter/new line
-  if (Math.random() < 0.08) {
-    text += "\\n";
+
+  // random ENTER key
+  if (Math.random() < 0.12) {
+    output += "\\n";
   }
 
-  // sometimes add hacker words
-  else if (Math.random() < 0.04) {
-    text += " " + randomWord() + " ";
+  // random hacker phrase
+  else if (Math.random() < 0.03) {
+    output += " " + randomWord() + " ";
   }
 
-  // normal typing
+  // random chunk typing
   else {
-    text += randomChar();
+
+    // sometimes type 1 char
+    // sometimes 2-5 chars quickly
+    let burst = Math.floor(Math.random() * 5) + 1;
+
+    for (let i = 0; i < burst; i++) {
+      output += randomChar();
+    }
   }
 
-  screen.textContent = text;
+  screen.textContent = output;
 
-  // auto scroll
-  window.scrollTo(0, document.body.scrollHeight);
+  // smooth scroll
+  screen.scrollTop = screen.scrollHeight;
 
-  // clear screen eventually
-  if (text.length > 20000) {
-    text = "";
+  // reset eventually
+  if (output.length > 30000) {
+    output = "";
   }
 
-  // random typing speed
-  const speed = Math.random() * 40 + 10;
+  // HUMAN typing speed randomness
+  let speed;
+
+  if (Math.random() < 0.2) {
+    speed = Math.random() * 200 + 100; // pause
+  } else {
+    speed = Math.random() * 40 + 5; // fast typing
+  }
 
   setTimeout(type, speed);
 }
